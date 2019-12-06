@@ -8,6 +8,24 @@ class Game extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      currentWords: undefined,
+      allPreviousWords: [],
+      showFinalPoem: false
+     }
+  }
+
+  updateWords = (newWords) => {
+
+    let allPreviousWords = this.state.allPreviousWords
+    allPreviousWords.push(newWords)
+    
+    //set state
+    this.setState({
+      currentWords: newWords,
+      allPreviousWords: allPreviousWords
+    });
+
   }
 
   render() {
@@ -19,6 +37,8 @@ class Game extends Component {
         return field;
       }
     }).join(" ");
+
+    const formattedSentence = this.state.currentWords !== undefined ? Object.values(this.state.currentWords).join(' ') : ' '
 
     return (
       <div className="Game">
@@ -33,10 +53,21 @@ class Game extends Component {
         </p>
 
         <RecentSubmission />
+        <p className="Game__format-example">
+          { formattedSentence }
+        </p>
+        <h3>Player Submission Form for Player #{this.state.allPreviousWords.length+1}</h3>
+        <PlayerSubmissionForm updateWordsCallback={this.updateWords}/>
+        
+        {this.state.showFinalPoem ? <FinalPoem sentences={this.state.allPreviousWords}/> : "Not currently showing final poem" }
 
-        <PlayerSubmissionForm />
-
-        <FinalPoem />
+        <div className="FinalPoem__reveal-btn-container">
+          <input 
+            type="button" 
+            value="We are finished: Reveal the Poem" className="FinalPoem__reveal-btn" 
+            onClick={()=>this.setState({showFinalPoem: true})}
+          />
+      </div>
 
       </div>
     );
