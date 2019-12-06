@@ -59,7 +59,10 @@ class Game extends Component {
         <h3>Player Submission Form for Player #{this.state.allPreviousWords.length+1}</h3>
         <PlayerSubmissionForm updateWordsCallback={this.updateWords}/>
         
-        {this.state.showFinalPoem ? <FinalPoem sentences={this.state.allPreviousWords}/> : "Not currently showing final poem" }
+        {
+        this.state.showFinalPoem ? 
+        <FinalPoem sentences={this.state.allPreviousWords}/>  : ' '
+        }
 
         <div className="FinalPoem__reveal-btn-container">
           <input 
